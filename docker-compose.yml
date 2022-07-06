@@ -1,0 +1,29 @@
+version: "3.3"
+services:
+  admin:
+    container_name: apostrophe
+    restart: always
+    build: ./
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./data/uploads:/app/public/uploads
+      - ./data/backups:/app/backups
+    environment:
+      - APOS_MONGODB_URI=mongodb://mongo:27017/db
+    depends_on:
+      - mongo
+
+  mongo:
+    container_name: mongo
+    image: mongo:4.4
+    restart: always
+    volumes:
+      - ./data/mongo/db:/data/db
+    ports:
+      - 27017:27017
+
+volumes:
+  apostrophe:
+  mongo:
+    driver: local
